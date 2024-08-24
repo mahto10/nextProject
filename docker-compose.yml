@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: no
+    logging:
+      driver: none
+
+  backend:
+    tty: true
+    container_name: postgres
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development # Change to production if needed
+    volumes:
+      - ./:/src
+    ports:
+      - 5000:5000 
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    restart: no
+    # command: npm run start
+
+volumes:
+  postgres_data:
+    name: postgres_data_dev
