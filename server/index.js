@@ -3,7 +3,8 @@ const port = process.env.PORT;
 const dbPort = process.env.DB_PORT;
 const env = process.env.NODE_ENV;
 const express = require("express");
-const pool = require("./config/db.config");
+// const pool = require("./config/db.config");
+const { sequelize } = require("./models/studentModel");
 const app = express();
 app.use(express.json());
 
@@ -18,8 +19,12 @@ app.use((err, req, res, next) => {
 
 async function startServer() {
   try {
-    await pool.query("SELECT NOW()");
-    console.log(`Connected to the PostgreSQL database ${dbPort}`);
+    await sequelize.authenticate();
+    console.log("Connected to the PostgreSQL database");
+
+    // await sequelize.sync({ force: true }); use only in development
+    await sequelize.sync();
+    console.log("Database synchronized");
 
     app.listen(port, () => {
       console.log(`Server is running on http://localhost:${port}`);

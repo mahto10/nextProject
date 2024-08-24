@@ -1,22 +1,40 @@
-const pool = require("../config/db.config");
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/db.config");
 
-const ensureUsersTableExists = async () => {
-  try {
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL UNIQUE,
-        password VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `);
-  } catch (error) {
-    console.error("Error ensuring users table:", error.message);
-    throw error;
+const Student = sequelize.define(
+  "Student",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+  },
+  {
+    tableName: "students",
+    timestamps: true,
   }
-};
+);
 
-ensureUsersTableExists();
-
-module.exports = { ensureUsersTableExists };
+module.exports = Student;
