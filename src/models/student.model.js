@@ -1,8 +1,8 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/db.config");
+const { DataTypes } = require('sequelize');
+const { dataSource } = require('../db/db');
 
-const Student = sequelize.define(
-  "Student",
+const Student = dataSource.define(
+  'Student',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -32,9 +32,11 @@ const Student = sequelize.define(
     },
   },
   {
-    tableName: "students",
+    tableName: 'students',
     timestamps: true,
   }
 );
 
-module.exports = Student;
+Student.sync().then();
+
+module.exports = { Student };
