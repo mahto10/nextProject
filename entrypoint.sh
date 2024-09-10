@@ -8,13 +8,13 @@ echo "Installing dependencies for the app"
 # Install nodejs dependencies
 npm install
 
-if [ "$NODE_ENV" == "production" ]; then
-    echo "Creating app build for production"
-    npm run build
+# if [ "$NODE_ENV" == "production" ]; then
+#     echo "Creating app build for production"
+#     npm run build
 
-    echo "Starting project in production mode"
-    node dist/server.js 
-else
-    echo "Starting project in development mode"
+#     echo "Starting project in production mode"
+#     node dist/server.js 
+# else
+#     echo "Starting project in development mode"
     npm run start
-fi
+# fi
