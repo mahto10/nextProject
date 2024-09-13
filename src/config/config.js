@@ -1,13 +1,11 @@
-exports.config = {
+require("dotenv").config();
+
+module.exports = {
   app: {
-    env: process.env.NODE_ENV,
-    port: process.env.PORT,
+    env: process.env.NODE_ENV || "development",
+    port: process.env.PORT || 3000,
   },
   db: {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    name: process.env.DB_NAME,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
+    uri: process.env.MONGODB_URI || "mongodb://localhost:27017/admission_26",
   },
 };

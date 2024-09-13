@@ -1,38 +1,44 @@
-const express = require('express');
+const express = require("express");
+const { config } = require("./config");
+const { AppServer } = require("./bin/server");
+const { Logger } = require("./lib/logger.lib");
+const { V1Router } = require("./routes");
+const { GlobalErrorHandler } = require("./middlewares/global-error.middleware");
+const { RequestLogger } = require("./middlewares/request-logger.middleware"); // Correct import
+const connectDB = require("./db/db");
 
-const { config } = require('./config');
-const { AppServer } = require('./bin/server');
-const { Logger } = require('./lib/logger.lib');
-const { dataSource } = require('./db/db');
-const { V1Router } = require('./routes');
-const { GlobalErrorHandler } = require('./middlewares/global-error.middleware');
-const { RequestLogger } = require('./middlewares/request-logger.middleware');
-
-process.on('uncaughtException', (err) => {
-  Logger.info('Uncaught Exception! Shutting down...');
-  Logger.info(err.toString());
+process.on("uncaughtException", (err) => {
+  Logger.error("Uncaught Exception! Shutting down...");
+  Logger.error(err.toString());
   process.exit(1);
 });
 
-function main() {
-  const app = express();
-
-  const server = AppServer.init(app, config)
-    .configure(express.json(), RequestLogger)
-    .connectDatabase(dataSource)
-    .routes(V1Router)
-    .globalExceptionHandler(GlobalErrorHandler.init())
-    .start(() => {
-      Logger.info(`listening on port: ${config.get('app').port}`);
-    });
-
-  process.on('unhandledRejection', (err) => {
-    Logger.info(`name: ${err.name} message: ${err.message}`);
-    Logger.info('Unhandled Rejection! Shutting down...');
-    server.close(() => {
-      process.exit(1);
-    });
+process.on("unhandledRejection", (err) => {
+  Logger.error(`name: ${err.name} message: ${err.message}`);
+  Logger.error("Unhandled Rejection! Shutting down...");
+  server.close(() => {
+    process.exit(1);
   });
+});
+
+async function main() {
+  try {
+    await connectDB();
+
+    const app = express();
+
+    const server = AppServer.init(app, config)
+      .configure(express.json(), RequestLogger)
+      .connectDatabase()
+      .routes(V1Router)
+      .globalExceptionHandler(GlobalErrorHandler.init())
+      .start(() => {
+        Logger.info(`listening on port: ${config.get("app").port}`);
+      });
+  } catch (err) {
+    Logger.error("Failed to start the app:", err);
+    process.exit(1);
+  }
 }
 
 main();

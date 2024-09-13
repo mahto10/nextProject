@@ -1,5 +1,5 @@
-const { createServer } = require('http');
-const { Logger } = require('../lib/logger.lib');
+const { createServer } = require("http");
+const { Logger } = require("../lib/logger.lib");
 
 class AppServer {
   #server;
@@ -24,15 +24,6 @@ class AppServer {
   }
 
   connectDatabase(dataSource) {
-    dataSource
-      .authenticate()
-      .then(() => {
-        Logger.info('Connection has been established successfully.');
-      })
-      .catch((error) => {
-        Logger.error('Unable to connect to the database:', error.message);
-      });
-
     return this;
   }
 
@@ -52,13 +43,19 @@ class AppServer {
     const PORT = this.#config.app.port;
 
     this.#server = createServer(this.#app);
-    this.#server.listen(PORT, '127.0.0.1', callback);
+    this.#server.listen(PORT, "127.0.0.1", callback);
+
+    Logger.info(`Server is listening on port ${PORT}`);
 
     return this;
   }
 
   close(callback) {
-    this.#server.close(callback);
+    if (this.#server) {
+      this.#server.close(callback);
+    } else {
+      callback();
+    }
   }
 }
 

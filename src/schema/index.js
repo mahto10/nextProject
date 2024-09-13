@@ -13,7 +13,7 @@ exports.requestValidator = (rules) => {
     const errors = [];
 
     for (let { status, reason } of result) {
-      if (status === 'rejected') errors.push(reason.details);
+      if (status === "rejected") errors.push(reason.details);
     }
 
     if (errors.length !== 0) {

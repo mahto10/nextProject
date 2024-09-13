@@ -1,28 +1,14 @@
-const { Sequelize } = require('sequelize');
-const { config } = require('../config');
-const { Logger } = require('../lib/logger.lib');
+const mongoose = require("mongoose");
+const { Logger } = require("../lib/logger.lib");
 
-const { host, user: username, password, port, name: database } = config.get('db');
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    Logger.info("MongoDB connected successfully");
+  } catch (err) {
+    Logger.error("Error in database connection:", err);
+    process.exit(1); // Exit if connection fails
+  }
+};
 
-const sequelize = new Sequelize({
-  dialect: 'postgres',
-  host,
-  username,
-  password,
-  port,
-  database,
-  logging: false,
-});
-
-if (config.get('app').env !== 'production') {
-  sequelize
-    .sync()
-    .then(() => {
-      Logger.info('Database synced');
-    })
-    .catch(() => {
-      Logger.error('Database syncing error');
-    });
-}
-
-exports.dataSource = sequelize;
+module.exports = connectDB;

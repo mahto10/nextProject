@@ -1,8 +1,9 @@
-const { ConfigSchema } = require('../schema/config.schema');
-const { config } = require('./config');
+const { ConfigSchema } = require("../schema/config.schema");
+const appConfig = require("./config");
 
 class Config {
   #config;
+
   constructor(config) {
     this.#config = config;
     this.#validate();
@@ -12,7 +13,7 @@ class Config {
     const { value, error } = ConfigSchema.validate(this.#config);
 
     if (error) {
-      throw new Error(error);
+      throw new Error(`ValidationError: ${error.message}`);
     }
 
     this.#config = value;
@@ -23,4 +24,4 @@ class Config {
   }
 }
 
-exports.config = new Config(config);
+exports.config = new Config(appConfig);
