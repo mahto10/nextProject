@@ -5,10 +5,12 @@ const {
   loginAdminRequest,
   verifyOtp,
 } = require("../schema/admin.schema");
+const authMiddleware = require("../middlewares/auth.middleware");
 
 exports.AdminRouter = (router) => {
   router.post(
     "/add-sub-admin",
+    authMiddleware(),
     requestValidator({ body: createAdminRequest }),
     AdminController.addSubAdmin()
   );

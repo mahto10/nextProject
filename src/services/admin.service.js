@@ -6,8 +6,21 @@ const otpService = require("../services/otp.service");
 const { generateRandomString } = require("../utils/common.utils");
 
 class AdminService {
-  async addSubAdmin(user) {
+  async addSubAdmin(loggedInAdmin, user) {
     const { name, email, permissions = [] } = user;
+
+    const admin = await Admin.findOne({ email: loggedInAdmin.email });
+
+    if (!admin) {
+      throw new Error("Admin not found");
+    }
+
+    if (
+      !admin.permissions.includes("same as admin") &&
+      !admin.permissions.includes("add other users")
+    ) {
+      throw new Error("You do not have permission to add sub-admins.");
+    }
 
     const plainPassword = generateRandomString();
 
@@ -48,8 +61,8 @@ class AdminService {
   async verifyLoginOTP({ email, otp }) {
     const isOtpValid = await otpService.verifyOTP(email, otp);
 
-    if (!isOtpValid) {
-      throw new Error("Invalid or expired OTP");
+    if (!isOtpValid.success) {
+      throw new Error(isOtpValid.message);
     }
 
     const admin = await Admin.findOne({ email });

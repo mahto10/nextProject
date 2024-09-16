@@ -1,6 +1,5 @@
 const BaseController = require("./base.controller");
 const { AdminService } = require("../services/admin.service");
-const req = require("express/lib/request");
 
 class AdminController extends BaseController {
   constructor() {
@@ -9,9 +8,17 @@ class AdminController extends BaseController {
 
   addSubAdmin() {
     return this.asyncWrapper(async (req, res) => {
-      const newUser = await AdminService.addSubAdmin(req.body);
+      const loggedInAdmin = req.user;
 
-      this.send(res, newUser);
+      const { name, email, permissions } = req.body;
+
+      const result = await AdminService.addSubAdmin(loggedInAdmin, {
+        name,
+        email,
+        permissions,
+      });
+
+      this.send(res, result);
     });
   }
 

@@ -44,13 +44,13 @@ const generateAndSendOTP = async (email) => {
 };
 
 const verifyOTP = async (email, otp) => {
-  const storedValue = await redisClient.get(email);
+  const storedOtpHash = await redisClient.get(email);
 
-  if (!storedValue) {
+  if (!storedOtpHash) {
     return { success: false, message: "OTP has expired or does not exist" };
   }
 
-  const isMatch = await compare(otp, storedValue);
+  const isMatch = await compare(otp, storedOtpHash);
 
   if (!isMatch) {
     return { success: false, message: "Invalid OTP" };

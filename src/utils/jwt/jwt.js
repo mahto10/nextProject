@@ -1,27 +1,25 @@
 const jwt = require("jsonwebtoken");
-const TokenTypesEnum = require("../enum/tokenEnum")
 const dotenv = require("dotenv");
 
 dotenv.config();
 
-const privateKey = process.env.JWT_PRIVATE_KEY.replace(/\\n/g, "\n");
-const publicKey = process.env.JWT_PUBLIC_KEY.replace(/\\n/g, "\n");
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
-exports.generateToken = (payload, subject = TokenTypesEnum) => {
+exports.generateToken = (payload, subject) => {
   const options = {
     issuer: process.env.JWT_ISSUER,
     audience: process.env.JWT_AUDIENCE,
     expiresIn: process.env.JWT_EXPIRES_IN || "1h",
-    subject: subject, 
-    algorithm: "RS256",
+    subject: subject,
+    algorithm: "HS256",
   };
 
-  return jwt.sign(payload, privateKey, options);
+  return jwt.sign(payload, JWT_SECRET_KEY, options);
 };
 
 exports.verifyToken = (token) => {
   try {
-    return jwt.verify(token, publicKey, { algorithms: ["RS256"] });
+    return jwt.verify(token, JWT_SECRET_KEY, { algorithms: ["HS256"] });
   } catch (err) {
     throw new Error("Invalid token");
   }
