@@ -45,6 +45,44 @@ class AdminController extends BaseController {
       this.send(res, response);
     });
   }
+
+  forgotPassword() {
+    return this.asyncWrapper(async (req, res) => {
+      const { email } = req.body;
+
+      const response = await AdminService.forgotPassword({ email });
+
+      this.send(res, response);
+    });
+  }
+
+  verifyOtpAndChangePassword() {
+    return this.asyncWrapper(async (req, res) => {
+      const { email, otp, newPassword } = req.body;
+
+      const response = await AdminService.verifyOtpAndChangePassword({
+        email,
+        otp,
+        newPassword,
+      });
+
+      this.send(res, response);
+    });
+  }
+
+  changePassword() {
+    return this.asyncWrapper(async (req, res) => {
+      const { email, currentPassword, newPassword } = req.body;
+
+      const response = await AdminService.changePassword({
+        email,
+        currentPassword,
+        newPassword,
+      });
+
+      this.send(res, response);
+    });
+  }
 }
 
 module.exports = { AdminController: new AdminController() };

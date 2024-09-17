@@ -15,3 +15,19 @@ exports.verifyOtp = Joi.object({
   email: Joi.string().email().required(),
   otp: Joi.string().required(),
 });
+
+exports.forgotPasswordRequest = Joi.object({
+  email: Joi.string().email().required(),
+});
+
+exports.verifyOtpAndChangePasswordRequest = Joi.object({
+  email: Joi.string().email().required(),
+  otp: Joi.string().required(),
+  newPassword: Joi.string().min(6).required(),
+});
+
+exports.changePasswordRequest = Joi.object({
+  email: Joi.string().email().required(),
+  currentPassword: Joi.string().required(),
+  newPassword: Joi.string().min(6).required(),
+});

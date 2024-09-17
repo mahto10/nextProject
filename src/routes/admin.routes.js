@@ -4,6 +4,9 @@ const {
   createAdminRequest,
   loginAdminRequest,
   verifyOtp,
+  forgotPasswordRequest,
+  verifyOtpAndChangePasswordRequest,
+  changePasswordRequest,
 } = require("../schema/admin.schema");
 const authMiddleware = require("../middlewares/auth.middleware");
 
@@ -25,6 +28,25 @@ exports.AdminRouter = (router) => {
     "/verify-login-otp",
     requestValidator({ body: verifyOtp }),
     AdminController.verifyLoginOTP()
+  );
+
+  router.post(
+    "/forgot-password",
+    requestValidator({ body: forgotPasswordRequest }),
+    AdminController.forgotPassword()
+  );
+
+  router.post(
+    "/verify-otp-reset-password",
+    requestValidator({ body: verifyOtpAndChangePasswordRequest }),
+    AdminController.verifyOtpAndChangePassword()
+  );
+
+  router.post(
+    "/change-password",
+    authMiddleware(),
+    requestValidator({ body: changePasswordRequest }),
+    AdminController.changePassword()
   );
 
   return router;

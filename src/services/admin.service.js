@@ -78,6 +78,87 @@ class AdminService {
 
     return { admin, token, message: "OTP verified, login successful" };
   }
+
+  async forgotPassword({ email }) {
+    const admin = await Admin.findOne({ email });
+
+    if (!admin) {
+      throw new Error("Admin not found");
+    }
+
+  
+    const sendOtp = await otpService.generateAndSendOTP(email);
+
+    return {
+      success: true,
+      message:
+        "OTP has been sent. Please check your email to reset your password.",
+      sendOtp,
+    };
+  }
+
+  
+  async verifyOtpAndChangePassword({ email, otp, newPassword }) {
+  
+    const isOtpValid = await otpService.verifyOTP(email, otp);
+
+    if (!isOtpValid) {
+      throw new Error("Invalid or expired OTP");
+    }
+
+  
+    const admin = await Admin.findOne({ email });
+
+    if (!admin) {
+      throw new Error("Admin not found");
+    }
+
+  
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+  
+    admin.password = hashedNewPassword;
+    await admin.save();
+
+  
+    const token = generateToken(
+      { id: admin.id, email: admin.email },
+      TokenTypesEnum.PASSWORD_RESET
+    );
+
+    return {
+      success: true,
+      message: "Password has been successfully reset",
+      token,
+    };
+  }
+
+  async changePassword({ email, currentPassword, newPassword }) {
+    const admin = await Admin.findOne({ email });
+
+    if (!admin) {
+      throw new Error("Admin not found");
+    }
+
+    const isCurrentPasswordValid = await bcrypt.compare(
+      currentPassword,
+      admin.password
+    );
+
+    if (!isCurrentPasswordValid) {
+      throw new Error("Current password is incorrect");
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    admin.password = hashedNewPassword;
+    await admin.save();
+
+    return {
+      success: true,
+      message: "Password has been changed successfully",
+    };
+  }
 }
 
 module.exports = { AdminService: new AdminService() };
