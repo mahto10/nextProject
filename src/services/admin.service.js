@@ -4,6 +4,7 @@ const { generateToken } = require("../utils/jwt/jwt");
 const TokenTypesEnum = require("../utils/enum/tokenEnum");
 const otpService = require("../services/otp.service");
 const { generateRandomString } = require("../utils/common.utils");
+const { Logger } = require("../lib/logger.lib");
 
 class AdminService {
   async addSubAdmin(loggedInAdmin, user) {
@@ -15,14 +16,9 @@ class AdminService {
       throw new Error("Admin not found");
     }
 
-    if (
-      !admin.permissions.includes("same as admin") &&
-      !admin.permissions.includes("add other users")
-    ) {
-      throw new Error("You do not have permission to add sub-admins.");
-    }
-
     const plainPassword = generateRandomString();
+
+    Logger.info("Admin created with password " + plainPassword);
 
     const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
@@ -33,7 +29,9 @@ class AdminService {
       permissions,
     });
 
-    return { newAdmin, plainPassword };
+    newAdmin.password = undefined;
+
+    return newAdmin;
   }
 
   async login({ email, password }) {
@@ -76,6 +74,8 @@ class AdminService {
       TokenTypesEnum.AUTHENTICATION
     );
 
+    admin.password = undefined;
+
     return { admin, token, message: "OTP verified, login successful" };
   }
 
@@ -86,7 +86,6 @@ class AdminService {
       throw new Error("Admin not found");
     }
 
-  
     const sendOtp = await otpService.generateAndSendOTP(email);
 
     return {
@@ -97,30 +96,24 @@ class AdminService {
     };
   }
 
-  
   async verifyOtpAndChangePassword({ email, otp, newPassword }) {
-  
     const isOtpValid = await otpService.verifyOTP(email, otp);
 
     if (!isOtpValid) {
       throw new Error("Invalid or expired OTP");
     }
 
-  
     const admin = await Admin.findOne({ email });
 
     if (!admin) {
       throw new Error("Admin not found");
     }
 
-  
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
 
-  
     admin.password = hashedNewPassword;
     await admin.save();
 
-  
     const token = generateToken(
       { id: admin.id, email: admin.email },
       TokenTypesEnum.PASSWORD_RESET

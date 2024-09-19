@@ -1,3 +1,4 @@
+const { Router } = require("express");
 const { AdminController } = require("../controllers/admin.controller");
 const { requestValidator } = require("../schema");
 const {
@@ -9,11 +10,15 @@ const {
   changePasswordRequest,
 } = require("../schema/admin.schema");
 const authMiddleware = require("../middlewares/auth.middleware");
+const { GlobalMiddleware } = require("../middlewares/global.middleware");
 
-exports.AdminRouter = (router) => {
+const router = Router();
+
+const AdminRouter = (router) => {
   router.post(
     "/add-sub-admin",
-    authMiddleware(),
+    GlobalMiddleware.adminAuth(),
+    GlobalMiddleware.permission("Other_User"),
     requestValidator({ body: createAdminRequest }),
     AdminController.addSubAdmin()
   );
@@ -51,3 +56,5 @@ exports.AdminRouter = (router) => {
 
   return router;
 };
+
+module.exports = { AdminRouter: AdminRouter(router) };

@@ -1,3 +1,4 @@
+const { Router } = require("express");
 const { OTPController } = require("../controllers/otp.controller");
 const { requestValidator } = require("../schema");
 const {
@@ -5,7 +6,9 @@ const {
   verifyOTPRequestSchema,
 } = require("../schema/otp.schema");
 
-exports.OTPRouter = (router) => {
+const router = Router();
+
+const OTPRouter = (router) => {
   router.post(
     "/generate",
     requestValidator({ body: otpRequestSchema }),
@@ -19,3 +22,5 @@ exports.OTPRouter = (router) => {
 
   return router;
 };
+
+module.exports = { OTPRouter: OTPRouter(router) };

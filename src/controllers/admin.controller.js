@@ -8,7 +8,7 @@ class AdminController extends BaseController {
 
   addSubAdmin() {
     return this.asyncWrapper(async (req, res) => {
-      const loggedInAdmin = req.user;
+      const loggedInAdmin = req.admin;
 
       const { name, email, permissions } = req.body;
 

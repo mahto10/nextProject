@@ -1,46 +1,42 @@
-const { required } = require("joi");
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const adminSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
+const adminSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
 
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
 
-  password: {
-    type: String,
-    required: true,
-  },
+    password: {
+      type: String,
+      required: true,
+    },
 
-  createdAt: {
-    type: Date,
-    default: Date.now,
+    permissions: {
+      type: [String],
+      enum: [
+        "Student_Management",
+        "Course_Management",
+        "Finance",
+        "Add_Other_User",
+        "All",
+      ],
+      required: true,
+    },
   },
-
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
-
-  permissions: {
-    type: [String],
-    enum: [
-      "student management",
-      "course management",
-      "finance",
-      "add other users",
-      "same as admin",
-    ],
-    required: true,
-  },
-});
+  {
+    timestamps: true,
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true },
+  }
+);
 
 const Admin = mongoose.model("Admin", adminSchema);
 
