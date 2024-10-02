@@ -12,6 +12,8 @@ const FeatureRouter = (router) => {
     FeatureController.create()
   );
 
+  router.get("/", FeatureController.getAll());
+
   return router;
 };
 

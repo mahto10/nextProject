@@ -2,17 +2,16 @@ const { FeatureService } = require("../services/features.service");
 const BaseController = require("./base.controller");
 
 class FeatureController extends BaseController {
-  constructor() {
-    super();
+  constructor(service) {
+    super(service);
   }
 
-  create() {
+  getAll() {
     return this.asyncWrapper(async (req, res) => {
-      const result = await FeatureService.create(req.body);
-
+      const result = await FeatureService.findAll();
       this.send(res, result, 201);
     });
   }
 }
 
-module.exports = { FeatureController: new FeatureController() };
+module.exports = { FeatureController: new FeatureController(FeatureService) };
