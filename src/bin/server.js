@@ -43,7 +43,7 @@ class AppServer {
     const PORT = this.#config.app.port;
 
     this.#server = createServer(this.#app);
-    this.#server.listen(PORT, "127.0.0.1", callback);
+    this.#server.listen(PORT, "0.0.0.0", callback);
 
     Logger.info(`Server is listening on port ${PORT}`);
 

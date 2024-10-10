@@ -14,6 +14,8 @@ const router = Router();
 
 const V1_PREFIX = "/api/v1";
 
+router.get('/', (req, res) => res.send('Ok'))
+
 router.use(`${V1_PREFIX}/admin`, AdminRouter);
 router.use(`${V1_PREFIX}/otp`, OTPRouter);
 router.use(`${V1_PREFIX}/feature`, FeatureRouter);
