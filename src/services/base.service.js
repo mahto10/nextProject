@@ -9,8 +9,18 @@ class BaseService {
     return result;
   }
 
+  // async update(id, data) {
+  //   const result = await this.model.findByIdAndUpdate(id, data);
+
+  //   return result;
+  // }
+
   async update(id, data) {
-    const result = await this.model.findByIdAndUpdate(id, data);
+    const result = await this.model.findByIdAndUpdate(
+      id,
+      { $set: data },
+      { new: true, runValidators: true }
+    );
 
     return result;
   }

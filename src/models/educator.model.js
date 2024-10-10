@@ -82,6 +82,11 @@ const EducatorSchema = new Schema(
       ref: "Course",
       required: true,
     },
+    admin: {
+      type: Types.ObjectId,
+      ref: "Admin",
+      required: true,
+    },
   },
   {
     timestamps: true,

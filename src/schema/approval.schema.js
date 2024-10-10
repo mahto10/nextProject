@@ -5,4 +5,12 @@ const ApprovalSchema = Joi.object({
   image: Joi.string().required(),
 }).required();
 
-exports.ApprovalSchema = ApprovalSchema;
+const UpdateApprovalSchema = Joi.object({
+  approvalName: Joi.string().optional(),
+  image: Joi.string().optional(),
+}).required();
+
+module.exports = {
+  ApprovalSchema,
+  UpdateApprovalSchema,
+};

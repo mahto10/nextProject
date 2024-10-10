@@ -18,7 +18,7 @@ const AdminRouter = (router) => {
   router.post(
     "/add-sub-admin",
     GlobalMiddleware.adminAuth(),
-    GlobalMiddleware.permission("Other_User"),
+    GlobalMiddleware.permission("Add_Other_User, All"),
     requestValidator({ body: createAdminRequest }),
     AdminController.addSubAdmin()
   );
