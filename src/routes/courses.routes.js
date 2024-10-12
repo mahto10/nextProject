@@ -10,7 +10,8 @@ const router = Router();
 const CourseRouter = (router) => {
   router.post(
     "/",
-    GlobalMiddleware.permission("Course_Management"),
+    // GlobalMiddleware.adminAuth(),
+    // GlobalMiddleware.permission("Course_Management"),
     requestValidator({ body: CourseSchema }),
     CourseController.create()
   );
