@@ -1,7 +1,10 @@
 const { Router } = require("express");
 const { FeatureController } = require("../controllers/feature.controller");
 const { requestValidator } = require("../schema");
-const { FeatureSchema } = require("../schema/feature.schema");
+const {
+  FeatureSchema,
+  UpdateFeatureSchema,
+} = require("../schema/feature.schema");
 
 const router = Router();
 
@@ -11,6 +14,16 @@ const FeatureRouter = (router) => {
     requestValidator({ body: FeatureSchema }),
     FeatureController.create()
   );
+
+  router.put(
+    "/:id",
+    requestValidator({ body: UpdateFeatureSchema }),
+    FeatureController.update()
+  );
+
+  router.delete("/:id", FeatureController.delete());
+
+  router.get("/:id", FeatureController.get());
 
   router.get("/", FeatureController.getAll());
 

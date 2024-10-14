@@ -5,4 +5,9 @@ const FeatureSchema = Joi.object({
   image: Joi.string().required(),
 }).required();
 
-exports.FeatureSchema = FeatureSchema;
+const UpdateFeatureSchema = Joi.object({
+  name: Joi.string(),
+  image: Joi.string(),
+}).required();
+
+module.exports = { FeatureSchema, UpdateFeatureSchema };

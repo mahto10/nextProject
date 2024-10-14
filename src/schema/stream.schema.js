@@ -4,4 +4,8 @@ const StreamSchema = Joi.object({
   streamName: Joi.string().required(),
 }).required();
 
-exports.StreamSchema = StreamSchema;
+const UpdateStreamSchema = Joi.object({
+  streamName: Joi.string().required(),
+}).required();
+
+module.exports = { StreamSchema, UpdateStreamSchema };

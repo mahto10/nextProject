@@ -6,4 +6,10 @@ const SpecializationSchema = Joi.object({
   numberOfYear: Joi.number().required(),
 }).required();
 
-exports.SpecializationSchema = SpecializationSchema;
+const UpdateSpecializationSchema = Joi.object({
+  specializationName: Joi.string(),
+  eligibility: Joi.array().items(Joi.string().hex().length(24)),
+  numberOfYear: Joi.number(),
+}).required();
+
+module.exports = { SpecializationSchema, UpdateSpecializationSchema };

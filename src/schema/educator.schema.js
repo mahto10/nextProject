@@ -31,4 +31,32 @@ const EducatorSchema = Joi.object({
   course: Joi.array().items(Joi.string()).required(),
 }).required();
 
-module.exports = { EducatorSchema };
+const UpdateEducatorSchema = Joi.object({
+  educatorType: Joi.array().items(
+    Joi.string().valid(
+      "School",
+      "College",
+      "University",
+      "Coaching",
+      "Distance/Online-Education"
+    )
+  ),
+  fullName: Joi.string(),
+  shortName: Joi.string(),
+  estbYear: Joi.string(),
+  affiliatedBy: Joi.array().items(Joi.string()),
+  mobileNumber: Joi.string(),
+  email: Joi.string().email(),
+  website: Joi.string(),
+  about: Joi.string(),
+  address: Joi.string(),
+  city: Joi.string(),
+  country: Joi.string(),
+  logo: Joi.string(),
+  gallery: Joi.array().items(Joi.string()).max(10),
+  certificate: Joi.array().items(Joi.string()).max(10),
+  facility: Joi.string(),
+  course: Joi.array().items(Joi.string()),
+}).required();
+
+module.exports = { EducatorSchema, UpdateEducatorSchema };

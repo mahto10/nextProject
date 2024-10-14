@@ -5,4 +5,9 @@ const DegreeSchema = Joi.object({
   stream: Joi.string().hex().length(24).required(),
 }).required();
 
-exports.DegreeSchema = DegreeSchema;
+const UpadteDegreeSchema = Joi.object({
+  degreeName: Joi.string(),
+  stream: Joi.string().hex().length(24),
+}).required();
+
+module.exports = { DegreeSchema, UpadteDegreeSchema };

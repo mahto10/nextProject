@@ -4,4 +4,8 @@ const EligibiltySchema = Joi.object({
   eligibiltyName: Joi.array().items(Joi.string()).required(),
 }).required();
 
-exports.EligibiltySchema = EligibiltySchema;
+const UpdateEligibilitySchema = Joi.object({
+  eligibiltyName: Joi.array().items(Joi.string()),
+}).required();
+
+module.exports = { EligibiltySchema, UpdateEligibilitySchema };
