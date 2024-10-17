@@ -3,7 +3,7 @@ const { Schema, model, Types } = require("mongoose");
 const eligibiltSchema = new Schema(
   {
     eligibiltyName: {
-      type: [String],
+      type: String,
       required: true,
     },
   },

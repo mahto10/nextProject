@@ -7,7 +7,7 @@ const DegreeSchema = Joi.object({
 
 const UpadteDegreeSchema = Joi.object({
   degreeName: Joi.string(),
-  stream: Joi.string().hex().length(24),
+  stream: Joi.string().hex().length(24).optional(),
 }).required();
 
 module.exports = { DegreeSchema, UpadteDegreeSchema };

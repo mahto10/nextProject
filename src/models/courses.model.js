@@ -11,17 +11,12 @@ const CoursesSchema = new Schema(
       type: String,
       required: true,
     },
-
     degree: {
       type: Types.ObjectId,
       ref: "Degree",
       required: true,
     },
-    specialization: {
-      type: Types.ObjectId,
-      ref: "Specialization",
-      required: true,
-    },
+ 
   },
   {
     timestamps: true,

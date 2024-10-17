@@ -1,4 +1,3 @@
-
 const { Schema, model, Types } = require("mongoose");
 
 const SpecializationSchema = new Schema(
@@ -7,17 +6,31 @@ const SpecializationSchema = new Schema(
       type: String,
       required: true,
     },
-    eligibility: [
-      {
-        type: Types.ObjectId,
-        ref: "Eligibility",
-        required: true,
-      },
-    ],
+    courses: {
+      type: Types.ObjectId,
+      ref: "Course",
+      required: true,
+    },
+
     numberOfYear: {
       type: Number,
       required: true,
     },
+    fees: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    eligibility: [
+      {
+        type: Types.ObjectId,
+        ref: "Eligibilty",
+        required: true,
+      },
+    ],
   },
   {
     timestamps: true,

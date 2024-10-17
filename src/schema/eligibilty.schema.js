@@ -1,11 +1,11 @@
 const Joi = require("joi");
 
 const EligibiltySchema = Joi.object({
-  eligibiltyName: Joi.array().items(Joi.string()).required(),
+  eligibiltyName: Joi.string().required(),
 }).required();
 
 const UpdateEligibilitySchema = Joi.object({
-  eligibiltyName: Joi.array().items(Joi.string()),
+  eligibiltyName: Joi.string().optional(),
 }).required();
 
 module.exports = { EligibiltySchema, UpdateEligibilitySchema };

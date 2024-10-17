@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, Types } = require("mongoose");
 
 const StreamSchema = new Schema(
   {
@@ -6,6 +6,7 @@ const StreamSchema = new Schema(
       type: String,
       required: true,
     },
+
   },
   {
     timestamps: true,
