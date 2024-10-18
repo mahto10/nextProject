@@ -6,6 +6,7 @@ const { V1Router } = require("./routes");
 const { GlobalErrorHandler } = require("./middlewares/global-error.middleware");
 const { RequestLogger } = require("./middlewares/request-logger.middleware"); // Correct import
 const connectDB = require("./db/db");
+const cors = require("cors");
 
 process.on("uncaughtException", (err) => {
   Logger.error("Uncaught Exception! Shutting down...");
@@ -26,6 +27,7 @@ async function main() {
     await connectDB();
 
     const app = express();
+    app.use(cors());
 
     const server = AppServer.init(app, config)
       .configure(express.json(), RequestLogger)
