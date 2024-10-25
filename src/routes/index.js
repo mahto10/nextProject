@@ -9,6 +9,7 @@ const { SpecializationRouter } = require("./specialization.routes");
 const { EligibiltyRouter } = require("./eligibilty.routes");
 const { ApprovalRouter } = require("./approval.routes");
 const { EducatorRouter } = require("./educator.routes");
+const { CloudinaryRouter } = require("./cloudinary.routes");
 
 const router = Router();
 
@@ -26,5 +27,6 @@ router.use(`${V1_PREFIX}/specialization`, SpecializationRouter);
 router.use(`${V1_PREFIX}/eligibilty`, EligibiltyRouter);
 router.use(`${V1_PREFIX}/approval`, ApprovalRouter);
 router.use(`${V1_PREFIX}/educator`, EducatorRouter);
+router.use(`${V1_PREFIX}/cloudinary`, CloudinaryRouter);
 
 module.exports = { V1Router: router };

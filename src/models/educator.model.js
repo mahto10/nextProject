@@ -27,7 +27,8 @@ const EducatorSchema = new Schema(
     },
     affiliatedBy: [
       {
-        type: String,
+        type: Types.ObjectId,
+        ref: "Approvals",
         required: true,
       },
     ],
@@ -73,15 +74,13 @@ const EducatorSchema = new Schema(
         type: String,
       },
     ],
-    facility: {
-      type: String,
-      required: true,
-    },
-    course: {
-      type: Types.ObjectId,
-      ref: "Course",
-      required: true,
-    },
+    facility: [
+      {
+        type: Types.ObjectId,
+        ref: "Feature",
+        required: true,
+      },
+    ],
     admin: {
       type: Types.ObjectId,
       ref: "Admin",

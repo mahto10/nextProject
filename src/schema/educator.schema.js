@@ -18,17 +18,55 @@ const EducatorSchema = Joi.object({
   affiliatedBy: Joi.array().items(Joi.string().required()).required(),
   mobileNumber: Joi.string().required(),
   email: Joi.string().email().required(),
-  // website: Joi.string().uri().required(),
   website: Joi.string().required(),
   about: Joi.string().required(),
   address: Joi.string().required(),
   city: Joi.string().required(),
   country: Joi.string().required(),
   logo: Joi.string().required(),
-  gallery: Joi.array().items(Joi.string()).required().max(10),
-  certificate: Joi.array().items(Joi.string()).required().max(10),
-  facility: Joi.string().required(),
-  course: Joi.array().items(Joi.string()).required(),
+  gallery: Joi.array().items(Joi.string()).max(10).required(),
+  certificate: Joi.array().items(Joi.string()).max(10).required(),
+  facility: Joi.array().items(Joi.string().required()).required(),
+
+  streams: Joi.array()
+    .items(
+      Joi.object({
+        streamName: Joi.string().required(),
+      })
+    )
+    .required(),
+
+  degrees: Joi.array()
+    .items(
+      Joi.object({
+        degreeName: Joi.string().required(),
+        stream: Joi.array().items(Joi.string().required()).required(),
+      })
+    )
+    .required(),
+
+  courses: Joi.array()
+    .items(
+      Joi.object({
+        fullCourseName: Joi.string().required(),
+        shortCourseName: Joi.string().required(),
+        degree: Joi.array().items(Joi.string().required()).required(),
+      })
+    )
+    .required(),
+
+  specializations: Joi.array()
+    .items(
+      Joi.object({
+        specializationName: Joi.string().required(),
+        courses: Joi.string().required(),
+        numberOfYear: Joi.number().required(),
+        fees: Joi.string().required(),
+        description: Joi.string().required(),
+        eligibility: Joi.array().items(Joi.string().required()).required(),
+      })
+    )
+    .required(),
 }).required();
 
 const UpdateEducatorSchema = Joi.object({
@@ -56,7 +94,6 @@ const UpdateEducatorSchema = Joi.object({
   gallery: Joi.array().items(Joi.string()).max(10),
   certificate: Joi.array().items(Joi.string()).max(10),
   facility: Joi.string(),
-  course: Joi.array().items(Joi.string()),
 }).required();
 
 module.exports = { EducatorSchema, UpdateEducatorSchema };
